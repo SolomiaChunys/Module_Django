@@ -1,0 +1,26 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}Returned Products{% endblock %}
+
+{% block content %}
+    <h1>Returned Products</h1>
+    <div class="product-list-container">
+        {% for obj in object_list %}
+            <div class="product-card">
+                <h3 class="product-title">{{ obj.order.product.name }}</h3>
+                <p class="product-description">Count: {{ obj.order.count }}</p>
+                <p class="product-price">User: {{ obj.order.user.username }}</p>
+                <br>
+                <form method="post" action="{% url 'accept_return' obj.pk %}" style="display: inline;">
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-outline-success" value="Accept">
+                </form>
+
+                <form method="post" action="{% url 'refuse_return' obj.pk %}" style="display: inline;">
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-outline-danger" value="Refuse">
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

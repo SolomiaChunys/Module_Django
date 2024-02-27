@@ -1,0 +1,64 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}Product Page{% endblock %}
+
+{% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+                <div class="error-message">{{ message }}</div>
+            {% endif %}
+        {% endfor %}
+
+        {% for message in messages %}
+            {% if message.tags == 'success' %}
+                <div class="success-message" style="color: limegreen; margin-bottom: 5px">{{ message }}</div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    <div class="product-list-container">
+        {% for obj in page_obj %}
+            <div class="product-card">
+                <h3 class="product-title">{{ obj.name }}</h3>
+                <p class="product-description">{{ obj.description }}</p>
+                <p class="product-description">Count: {{ obj.count }}</p>
+                <p class="product-price">{{ obj.price }}₴</p>
+
+                {% if user.is_active and not user.is_staff %}
+                    <form method="post" action="{% url 'purchase' obj.pk %}">
+                        {% csrf_token %}
+                        <br>
+                        <input type="number" name="count" class="form-control" style="width: 50%; display: inline-block;" placeholder="Enter Count" min="0">
+                        <input type="submit" class="btn btn-success" style="margin-bottom: 4px;" value="Buy">
+                    </form>
+                {% endif %}
+                {% if user.is_superuser %}
+                    <form method="post" action="{% url 'update_product' obj.pk %}">
+                        {% csrf_token %}
+                        <input type="submit" class="btn btn-warning" style="margin-top: 8px;" value="Update">
+                    </form>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    <nav aria-label="...">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                </li>
+            {% endif %}
+            {% for num in paginator.page_range %}
+                <li class="page-item {% if num == page_obj.number %}active{% endif %}">
+                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+
+{% endblock %}
