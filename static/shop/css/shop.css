@@ -1,0 +1,145 @@
+.my_cont {
+    padding-top: 15px;
+    padding-bottom: 3px;
+    background-color: #181818;
+    border-bottom: 1px solid #4d4d4d;
+}
+
+.elements {
+    padding-right: 15px;
+    padding-left: 15px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.navigation_mar {
+    padding-top: 7px;
+    list-style: none;
+    padding-left: 30px;
+}
+
+.navigation {
+    padding-top: 7px;
+    list-style: none;
+    padding-right: 30px;
+    margin-left: auto;
+}
+
+.nav_link_px {
+    color: ghostwhite;
+    font-weight: normal;
+    font-size: 18px;
+    padding-left: 1.5rem;
+    text-decoration: none;
+}
+
+.nav_link_px:hover {
+    color: cornflowerblue;
+}
+
+.line {
+    display: inline-block;
+}
+
+body {
+    background: #2c2c2c;
+}
+
+main .content {
+    color: whitesmoke;
+    margin-top: 50px;
+    text-align: center;
+}
+
+main .features form {
+    max-width: 400px;
+    margin: 30px auto;
+}
+
+.accept {
+    text-align: center;
+    color: aquamarine;
+}
+
+.refuse {
+    text-align: center;
+    color: brown;
+}
+
+.nav_link_px_login {
+    color: #0072ff;
+    font-weight: normal;
+    font-size: 18px;
+    text-decoration: none;
+    list-style: none;
+}
+
+.nav_link_px_login:hover {
+    color: #004ed5;
+    border-color: cornflowerblue;
+}
+
+.error-message {
+    color: brown;
+    list-style: none;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.username {
+    color: cornflowerblue;
+    font-weight: bold;
+}
+
+.product-list-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.product-card {
+  position: relative;
+  width:350px;
+  margin-bottom: 20px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.product-image {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.product-title {
+  font-size: 20px;
+  margin: 0;
+  color: cornflowerblue;
+}
+
+.product-description {
+  margin: 10px 0;
+}
+
+.product-price {
+  font-weight: bold;
+  margin: 0;
+}
+
+.page-link {
+    color: cornflowerblue;
+}
+
+.page-item.active .page-link {
+    background-color: cornflowerblue;
+    border-color: cornflowerblue;
+}
+
+.page-item.active .page-link:hover {
+    background-color: #0072ff;
+    border-color: #0072ff;
+}
