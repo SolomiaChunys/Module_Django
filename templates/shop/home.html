@@ -28,7 +28,7 @@
                     <form method="post" action="{% url 'purchase' obj.pk %}">
                         {% csrf_token %}
                         <br>
-                        <input type="number" name="count" class="form-control" style="width: 50%; display: inline-block;" placeholder="Enter Count" min="0">
+                        <input type="number" name="count" class="form-control" style="width: 50%; display: inline-block;" placeholder="Enter Count" min="0" required>
                         <input type="submit" class="btn btn-success" style="margin-bottom: 4px;" value="Buy">
                     </form>
                 {% endif %}
