@@ -125,6 +125,11 @@ class ProductCreatePage(CreateView):
     form_class = ProductCreateForm
     template_name = 'shop/create_products.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return redirect('home')
+        return super().dispatch(request, *args, **kwargs)
+
     def get_success_url(self):
         return reverse_lazy('home')
 
@@ -155,6 +160,11 @@ class ProductUpdatePage(UpdateView):
     form_class = ProductCreateForm
     template_name = 'shop/update_products.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return redirect('home')
+        return super().dispatch(request, *args, **kwargs)
+
     def get_success_url(self):
         return reverse_lazy('home')
 
@@ -163,6 +173,11 @@ class ProductUpdatePage(UpdateView):
 class ReturnAdminPage(ListView):
     model = Return
     template_name = 'shop/return_page.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return redirect('home')
+        return super().dispatch(request, *args, **kwargs)
 
 
 class CreateReturnPage(LoginRequiredMixin, CreateView):

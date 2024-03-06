@@ -24,7 +24,7 @@ class Product(models.Model):
 
 
 class Order(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     count = models.PositiveIntegerField()
     datatime_of_purchase = models.DateTimeField(auto_now_add=True)

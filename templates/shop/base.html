@@ -13,22 +13,16 @@
 <body>
     <nav class="my_cont">
         <div class="elements">
-            {% if user.is_superuser %}
-                <ul class="navigation_mar">
-                    <li class="line"><a href="{% url 'home' %}" class="nav_link_px" aria-current="page">Home</a></li>
+            <ul class="navigation_mar">
+                <li class="line"><a href="{% url 'home' %}" class="nav_link_px {% if not user.is_superuser and user.is_active %}active{% endif %}" aria-current="page">Home</a></li>
+                {% if user.is_superuser %}
                     <li class="line"><a href="{% url 'create_product' %}" class="nav_link_px">Create Product</a></li>
                     <li class="line"><a href="{% url 'return_product' %}" class="nav_link_px">Return List</a></li>
-                </ul>
-            {% elif user.is_active %}
-                <ul class="navigation_mar">
-                    <li class="line"><a href="{% url 'home' %}" class="nav_link_px" aria-current="page">Home</a></li>
+                {% elif user.is_active %}
                     <li class="line"><a href="{% url 'user_purchase' %}" class="nav_link_px">Purchases</a></li>
-                </ul>
-            {% else %}
-                <ul class="navigation_mar">
-                    <li class="line"><a href="{% url 'home' %}" class="nav_link_px" aria-current="page">Home</a></li>
-                </ul>
-            {% endif %}
+                {% endif %}
+            </ul>
+
             {% if user.is_authenticated %}
                 <ul class="navigation">
                     <span class="username">{{ user.username }}</span>
