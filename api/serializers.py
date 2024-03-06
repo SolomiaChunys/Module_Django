@@ -47,3 +47,17 @@ class NewOrderSerializer(serializers.ModelSerializer):
             'product',
             'count'
         ]
+
+
+class UserOrderSerializer(serializers.ModelSerializer):
+    orders = OrderSerializer(many=True)
+
+    class Meta:
+        model = User
+        fields = [
+            'id',
+            'username',
+            'password',
+            'wallet',
+            'orders'
+        ]
