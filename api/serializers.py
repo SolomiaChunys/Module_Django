@@ -48,6 +48,12 @@ class NewOrderSerializer(serializers.ModelSerializer):
             'count'
         ]
 
+    def create(self, validated_data):
+        user = validated_data.get('user')
+        get_user = User.objects.get_or_create(**user)
+        create_order = Order.objects.create(user=get_user, **validated_data)
+        return create_order
+
 
 class UserOrderSerializer(serializers.ModelSerializer):
     orders = OrderSerializer(many=True)
@@ -61,3 +67,12 @@ class UserOrderSerializer(serializers.ModelSerializer):
             'wallet',
             'orders'
         ]
+
+    def create(self, validated_data):
+        orders = validated_data.get('orders')
+        create_user = User.objects.create(**validated_data)
+
+        for order in orders:
+            create_order = Order.objects.create(user=create_user, **order)
+
+        return create_user
