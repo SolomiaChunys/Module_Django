@@ -34,3 +34,16 @@ class OrderSerializer(serializers.ModelSerializer):
             'product',
             'count'
         ]
+
+
+class NewOrderSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+
+    class Meta:
+        model = Order
+        fields = [
+            'id',
+            'user',
+            'product',
+            'count'
+        ]

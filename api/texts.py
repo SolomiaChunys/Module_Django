@@ -1,4 +1,4 @@
-from api.serializers import UserSerializer, ProductSerializer, OrderSerializer
+from api.serializers import UserSerializer, ProductSerializer, OrderSerializer, NewOrderSerializer
 from shop.models import User, Product, Order
 
 # 2.1
@@ -48,16 +48,25 @@ user_serializer = UserSerializer(user)
 product_serializer = ProductSerializer(product)
 order_serializer = OrderSerializer(last_order)
 
-user_serializer.data
-product_serializer.data
-order_serializer.data
+# user_serializer.data
+# product_serializer.data
+# order_serializer.data
+#
+#
+# >>> user_serializer.data
+# {'id': 6, 'username': 'lisa', 'password': 'Lissa11_', 'wallet': '10000.00'}
+#
+# >>> product_serializer.data
+# {'id': 16, 'name': 'Car toy', 'description': 'Toy for kids 3+', 'price': '400.00', 'count': 20}
+#
+# >>> order_serializer.data
+# {'id': 31, 'user': 6, 'product': 16, 'count': 5}
 
+# 3.1
+new_order = Order.objects.first()
+neworder_serializer = NewOrderSerializer(new_order)
+neworder_serializer.data
 
->>> user_serializer.data
-{'id': 6, 'username': 'lisa', 'password': 'Lissa11_', 'wallet': '10000.00'}
-
->>> product_serializer.data
-{'id': 16, 'name': 'Car toy', 'description': 'Toy for kids 3+', 'price': '400.00', 'count': 20}
-
->>> order_serializer.data
-{'id': 31, 'user': 6, 'product': 16, 'count': 5}
+>>> neworder_serializer.data
+{'id': 31, 'user': OrderedDict([('id', 6), ('username', 'lisa'), ('password', 'Lissa11_'), ('wallet', '10000.00')]), 'product':
+ 16, 'count': 5}
