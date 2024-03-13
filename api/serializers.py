@@ -38,6 +38,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
 class NewOrderSerializer(serializers.ModelSerializer):
     user = UserSerializer()
+    product = ProductSerializer()
 
     class Meta:
         model = Order
@@ -50,7 +51,7 @@ class NewOrderSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = validated_data.get('user')
-        get_user = User.objects.get_or_create(**user)
+        get_user, created = User.objects.get_or_create(**user)
         create_order = Order.objects.create(user=get_user, **validated_data)
         return create_order
 
