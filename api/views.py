@@ -1,9 +1,19 @@
-from api.serializers import UserSerializer, ProductSerializer, OrderSerializer
+from api.serializers import (
+    UserSerializer,
+    ProductSerializer,
+    OrderSerializer,
+    ReturnSerializer,
+)
 from rest_framework.exceptions import ValidationError
 from rest_framework import permissions, viewsets
-from shop.models import User, Product, Order
+from shop.models import User, Product, Order, Return
 from rest_framework.decorators import action
+from api.filters import IsOwnerOfOrder
+from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
+from rest_framework.status import HTTP_400_BAD_REQUEST
+from datetime import datetime, timedelta
+from rest_framework.authtoken.models import Token
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -40,11 +50,6 @@ class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
-    def perform_create(self, serializer):
-        product_data = serializer.save()
-        product_data.name += '!'
-        product_data.save()
-
     def get_queryset(self):
         queryset = super().get_queryset()
         filter_name = self.request.query_params.get('filter_name')
@@ -58,3 +63,29 @@ class ProductViewSet(viewsets.ModelViewSet):
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+    filter_backends = [IsOwnerOfOrder]
+
+
+class ReturnViewSet(viewsets.ModelViewSet):
+    queryset = Return.objects.all().order_by('datatime_of_return')
+    serializer_class = ReturnSerializer
+
+
+# Отримання токену
+class ObtainExpiringAuthToken(ObtainAuthToken):
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            user = serializer.validated_data['user']
+            token, created = Token.objects.get_or_create(user=user)
+
+            if not created:
+                if datetime.now() - token.created > timedelta(minutes=10):
+                    token.delete()
+                    token = Token.objects.create(user=user)
+
+            return Response({
+                'token': token.key,
+                'user_id': user.pk,
+            })
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)

@@ -40,5 +40,8 @@ class Return(models.Model):
     order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name='returns')
     datatime_of_return = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['datatime_of_return']
+
     def __str__(self):
         return f"{self.order.user.username}: {self.order.product.name} {self.order.product.count}"
