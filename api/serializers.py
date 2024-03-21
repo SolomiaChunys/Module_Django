@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from shop.models import User, Product, Order
+from shop.models import User, Product, Order, Return
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -8,8 +8,8 @@ class UserSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'username',
+            'email',
             'password',
-            'wallet'
         ]
 
 
@@ -25,18 +25,21 @@ class ProductSerializer(serializers.ModelSerializer):
         ]
 
 
+# class OrderSerializer(serializers.ModelSerializer):
+#     user = UserSerializer()
+#     product = ProductSerializer()
+#
+#     class Meta:
+#         model = Order
+#         fields = [
+#             'id',
+#             'user',
+#             'product',
+#             'count'
+#         ]
+
+
 class OrderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Order
-        fields = [
-            'id',
-            'user',
-            'product',
-            'count'
-        ]
-
-
-class NewOrderSerializer(serializers.ModelSerializer):
     user = UserSerializer()
     product = ProductSerializer()
 
@@ -50,10 +53,33 @@ class NewOrderSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data):
-        user = validated_data.get('user')
+        user = validated_data.pop('user')
+        product = validated_data.pop('product')
+
         get_user, created = User.objects.get_or_create(**user)
-        create_order = Order.objects.create(user=get_user, **validated_data)
+        get_product, created = Product.objects.get_or_create(**product)
+
+        create_order = Order.objects.create(user=get_user, product=get_product, **validated_data)
         return create_order
+
+
+class ReturnSerializer(serializers.ModelSerializer):
+    order = OrderSerializer()
+
+    class Meta:
+        model = Return
+        fields = [
+            'id',
+            'order',
+        ]
+
+    def create(self, validated_data):
+        order = validated_data.pop('order')
+
+        get_order, created = Order.objects.get_or_create(**order)
+
+        create_return = Return.objects.create(order=get_order, **validated_data)
+        return create_return
 
 
 class UserOrderSerializer(serializers.ModelSerializer):
@@ -71,6 +97,7 @@ class UserOrderSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         orders = validated_data.get('orders')
+
         create_user = User.objects.create(**validated_data)
 
         for order in orders:
