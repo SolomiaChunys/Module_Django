@@ -4,87 +4,28 @@ from threading import Thread
 from multiprocessing import Process
 
 
-# def sync(urls):
-#     start = time()
-#
-#     for url in urls:
-#         requests.get(url)
-#
-#     end = time()
-#     return f'Synchronous request time: {end - start}'
-#
-#
-# def multithreading(urls):
-#     start = time()
-#
-#     threads = []
-#     for url in urls:
-#         thread = Thread(target=requests.get, args=(url,))
-#         thread.start()
-#         threads.append(thread)
-#
-#     end = time()
-#
-#     for thread in threads:
-#         thread.join()
-#
-#     return f'Multithreading request time: {end - start}'
-#
-#
-# def multiprocess(urls):
-#     start = time()
-#
-#     processes = []
-#     for url in urls:
-#         process = Process(target=requests.get, args=(url,))
-#         process.start()
-#         processes.append(process)
-#
-#     end = time()
-#
-#     for process in processes:
-#         process.join()
-#
-#     return f'Multiprocessing request time: {end - start}'
+def power_numb(numb):
+    return numb ** 1000000
 
 
-# if __name__ == "__main__":
-#     urls = ['https://google.com', 'https://amazon.com', 'https://microsoft.com']
-#
-#     print(sync(urls))
-#     print(multithreading(urls))
-#     print(multiprocess(urls))
-
-
-# Synchronous request time: 3.5606
-# Multithreading request time: 0.0029
-# Multiprocessing request time: 0.0157
-
-# Висновок: Порівняно з Синхронним способом,
-# Багатопроцесорний способи є значно швидшими,
-# А Багатопоточний виявився ще швидшим.
-
-
-def sync(urls):
+def sync_power(numbs):
     start = time()
 
-    for url in urls:
-        for _ in range(5):
-            requests.get(url)
+    for numb in numbs:
+        power_numb(numb)
 
     end = time()
     return f'Synchronous request time: {end - start}'
 
 
-def multithreading(urls):
+def multithreading_power(numbs):
     start = time()
 
     threads = []
-    for url in urls:
-        for _ in range(5):
-            thread = Thread(target=requests.get, args=(url,))
-            thread.start()
-            threads.append(thread)
+    for numb in numbs:
+        thread = Thread(target=power_numb, args=(numb,))
+        thread.start()
+        threads.append(thread)
 
     end = time()
 
@@ -94,15 +35,14 @@ def multithreading(urls):
     return f'Multithreading request time: {end - start}'
 
 
-def multiprocess(urls):
+def multiprocess_power(numbs):
     start = time()
 
     processes = []
-    for url in urls:
-        for _ in range(5):
-            process = Process(target=requests.get, args=(url,))
-            process.start()
-            processes.append(process)
+    for numb in numbs:
+        process = Process(target=power_numb, args=(numb,))
+        process.start()
+        processes.append(process)
 
     end = time()
 
@@ -113,13 +53,16 @@ def multiprocess(urls):
 
 
 if __name__ == "__main__":
-    urls = ['https://google.com', 'https://amazon.com', 'https://microsoft.com']
+    urls = [2, 3, 5]
 
-    print(sync(urls))
-    print(multithreading(urls))
-    print(multiprocess(urls))
+    print(sync_power(urls))
+    print(multithreading_power(urls))
+    print(multiprocess_power(urls))
 
 
-# Synchronous request time: 17.0268
-# Multithreading request time: 0.0129
-# Multiprocessing request time: 0.0809
+# Synchronous request time: 0.1870
+# Multithreading request time: 0.1670
+# Multiprocessing request time: 0.0169
+
+# Висновок: для такого завдання варто використовувати Багатопроцесорний спосіб,
+# адже він найшвидший в паралельному виконанні обчислень.
