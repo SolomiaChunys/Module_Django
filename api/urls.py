@@ -7,14 +7,16 @@ from api.views import (
     OrderViewSet,
     ReturnViewSet,
     ObtainExpiringAuthToken,
+    AuthViewSet,
 )
 
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
-router.register(r'product', ProductViewSet)
+router.register(r'product', ProductViewSet, basename='product')
 router.register(r'order', OrderViewSet)
 router.register(r'return', ReturnViewSet)
+router.register('api/auth', AuthViewSet, basename='auth')
 
 urlpatterns = [
     path('', include(router.urls)),
