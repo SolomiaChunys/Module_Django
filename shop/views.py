@@ -9,6 +9,7 @@ from .forms import SignUpForm, ProductCreateForm
 from django.contrib.auth import login
 from .models import Product, Order, Return, User
 from django.contrib import messages
+from shop.tasks import accept_all
 
 
 class BaseView(View):
@@ -214,11 +215,8 @@ class AcceptReturnAdmin(DeleteView):
         product = order.product
         user = order.user
 
-        wallet = User.objects.filter(username=user.username).values('wallet').first()['wallet']
-
         product.count += order.count
-        wallet += product.price * order.count
-        User.objects.filter(username=user.username).update(wallet=wallet)
+        user.wallet += product.price * order.count
         product.save()
 
         return_form.delete()
@@ -239,4 +237,10 @@ class RefuseReturnAdmin(DeleteView):
 
         return_form.delete()
 
+        return redirect('return_product')
+
+
+class AcceptAllAdmin(View):
+    def post(self, request, *args, **kwargs):
+        accept_all.delay()
         return redirect('return_product')

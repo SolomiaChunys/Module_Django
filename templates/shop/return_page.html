@@ -23,4 +23,10 @@
             </div>
         {% endfor %}
     </div>
+
+    <form method="post" action="{% url 'accept_all_return' %}" style="display: inline;">
+        {% csrf_token %}
+        <input type="submit" class="btn btn-outline-success" value="Accept all returns!">
+    </form>
+
 {% endblock %}
