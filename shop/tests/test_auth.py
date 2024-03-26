@@ -1,17 +1,14 @@
 from django.test import TestCase
-from shop.views import LoginPage, LogoutPage, SignupPage
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+from api.factory import UserFactory
 
 User = get_user_model()
 
 
 class AuthTestCase(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(
-            username='Lisa',
-            password='lisa_1234'
-        )
+        self.user = UserFactory()
 
     def test_login(self):
         url = reverse('login_page')
@@ -19,8 +16,8 @@ class AuthTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
         data = {
-            'username': 'Lisa',
-            'password': 'lisa_1234',
+            'username': 'Rose',
+            'password': 'rose1234_',
         }
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 302)
@@ -28,8 +25,8 @@ class AuthTestCase(TestCase):
 
     def test_logout(self):
         self.client.login(
-            username='Lisa',
-            password='lisa_1234'
+            username='Rose',
+            password='rose1234_'
         )
 
         url = reverse('logout_page')

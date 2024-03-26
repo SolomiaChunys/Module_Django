@@ -1,22 +1,15 @@
 from rest_framework.test import APITestCase
 from django.contrib.auth import get_user_model
-from rest_framework.test import APIClient
 from shop.models import Product
 from django.urls import reverse
+from api.factory import ProductFactory
 
 User = get_user_model()
 
 
 class ProductTest(APITestCase):
     def setUp(self):
-        self.product = Product.objects.create(
-            name='My test product',
-            description='The description of product',
-            price=50.0,
-            count=5,
-        )
-
-        self.client = APIClient()
+        self.product = ProductFactory()
 
     def test_create(self):
         data = {

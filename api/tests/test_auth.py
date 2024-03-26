@@ -1,21 +1,15 @@
 from rest_framework.test import APITestCase
 from django.contrib.auth import get_user_model
-from rest_framework.test import APIClient
 from rest_framework import status
 from django.urls import reverse
+from api.factory import UserFactory
 
 User = get_user_model()
 
 
 class AuthTests(APITestCase):
     def setUp(self):
-        self.user = User.objects.create_user(
-            username='Rose',
-            email='rose@gmail.com',
-            password='rose1234_'
-        )
-
-        self.client = APIClient()
+        self.user = UserFactory()
 
     def test_login(self):
         url = reverse('auth-login')
