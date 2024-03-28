@@ -14,5 +14,6 @@ urlpatterns = [
     path('send/return/<int:pk>/', views.CreateReturnPage.as_view(), name='create_return'),
     path('accept/return/<int:pk>/', views.AcceptReturnAdmin.as_view(), name='accept_return'),
     path('refuse/return/<int:pk>/', views.RefuseReturnAdmin.as_view(), name='refuse_return'),
+    path('accept-all-returns/', views.AcceptAllAdmin.as_view(), name='accept_all_return'),
     path('', views.ProductPage.as_view(), name='home'),
 ]
