@@ -15,8 +15,9 @@ async def main(urls):
         tasks = []
 
         for url in urls:
-            task = asyncio.create_task(get_page(session, url))
-            tasks.append(task)
+            for _ in range(5):
+                task = asyncio.create_task(get_page(session, url))
+                tasks.append(task)
 
         await asyncio.gather(*tasks)
 
@@ -33,4 +34,4 @@ if __name__ == "__main__":
     print(asyncio.run(main(urls)))
 
 
-# Async request time: 2.1010
+# Async request time: 1.9171
